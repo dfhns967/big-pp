@@ -406,7 +406,6 @@ client.on('message', message => {
             .setTitle('``Info Your Server`` ')
             .addField('``My Ping``' , [`${Date.now() - message.createdTimestamp}` + 'MS'], true)
             .addField('``RAM Usage``', `[${(process.memoryUsage().rss / 1048576).toFixed()}MB]`, true)
-            .addField('``servers``', [chttps://maps.google.com/lient.guilds.size], true)
             .addField('``channels``' , `[ ${client.channels.size} ]` , true)
             .addField('``Users``' ,`[ ${client.users.size} ]` , true)
             .addField('``My Name``' , `[ ${client.user.tag} ]` , true)

@@ -22,6 +22,44 @@ const dateFormat = require('dateformat');
 const prefix = "!"
 const developers = "706161534233083964"
 
+
+client.on('message', message => {
+    if (message.content == prefix + "help") {
+    	const bot = new Discord.RichEmbed()
+      .setAuthor(client.user.username, client.user.avatarURL)
+      .setColor("#00000")
+      .addField(
+        "✽ **Bot Ping** : ",
+        `» ${Date.now() - client.createdTimestamp}` + " ms",
+        true
+      )
+      .addField("**!sr3a** :  ", `» "لعبة السرعة"`, true)
+      .addField("**!puz** : ", `» "لعبة الاسئلة" `, true)
+      .addField("**!fkk** : ", `» "لعبة التفكيك" `, true)
+      .addField("**!tax** :  ", `» "ل حساب ضريبة البرو بوت" `, true)
+      .addField("**!tag** :  ", `» "ل زخرفة الكلام"`, true) // تعديل اساسي غير الايدي لايدي حسابك
+      .addField("**!say** :  ", `» "ل جعل البوت يقول كلام"`, true)
+      .addField("**!ban** :  ", `» "ل حظر عضو"`, true)
+      .addField("**!unban** :  ", `» "ل فك الحظر عن عضو"`, true)
+      .addField("**!mute** :  ", `» "ل اسكات عضو"`, true)
+      .addField("**!unmute* :  ", `» "ل فك الاسكات عن شخص"`, true)
+      .addField("**!credits* :  ", `» "ل اظهار عدد الكردتس او تحويل كردتس"`, true)	
+      .addField("**!daily* :  ", `» "ل خذ الراتب اليومي من الكردتس"`, true)
+      .addField("**!ping* :  ", `» "ل اظهار سرعة البوت"`, true)
+      .addField("**!bot* :  ", `» "ل اظهار معلومات البوت"`, true)	
+      .addField("**!avt* :  ", `» "ل اظهار صورة عضو"`, true)	
+      .addField("**!clear* :  ", `» "ل حذف الرسائل"`, true)	
+      .addField("**!closec* :  ", `» "ل اغلاق الروم"`, true)
+      .addField("**!open* :  ", `» "ل فتح الروم"`, true)	
+      .addField("**!move* :  ", `» "ل سحب عضو معين الى روم صوتي معينة"`, true)	
+	
+	.setImage("")
+      .setFooter(message.author.username, message.client.avatarURL);
+	message.channel.type === (`"dm"`) + msg.author.sendMessage(bot)
+	  message.react('✅')
+    }
+
+
 client.on('message', message => {
     if (message.content == prefix + "sr3a") { 
         var x = ["LioN_Dz",
@@ -260,25 +298,6 @@ client.on('message', fkk => {
         }) //OT|| The Wolf Is Back
     }
 }); //OT|| The Wolf Is Back
- 
-client.on('message', luxy => { 
-if (luxy.author.bot) return;
-if (luxy.content === prefix+"help") {
-let embed = new Discord.RichEmbed()
- 
-.setColor("GREEN")
-.setDescription(`**~~=~~ أوامر الالعاب
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-${prefix}fkk
- 
-${prefix}sr3a
- 
-${prefix}puz
- 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ **`)
-luxy.channel.send({embed:embed});
-}
-}); 
 
 const invites = {};
 const wait = require('util').promisify(setTimeout);
@@ -355,7 +374,7 @@ if (!rank) return message.reply('ليس لديك صلاحيات')
 });
 
 client.on('message', message => {
-    var prefix = "البرفكس";
+    var prefix = "!";
 if (message.content.startsWith(prefix + 'tag')) {
     let args = message.content.split(" ").slice(1);
 if(!args[0]) return message.reply('مرجو كتابة نص الدي تريد');  
@@ -826,7 +845,7 @@ client.on('message', message => {
     }
   });
   client.on('message', message => {
-    if (message.content.startsWith('برفكس هناavt')) {
+    if (message.content.startsWith('!avt')) {
         if (message.author.bot || message.channel.type == 'dm') return;
         var args = message.content.split(' ')[1];
         var avt = args || message.author.id;
@@ -844,5 +863,87 @@ client.on('message', message => {
             .catch(() => message.channel.send(`Error`));
     } 
 }); 
+
+const credits = JSON.parse(fs.readFileSync("./creditsCode.json", "utf8"));
+const coolDown = new Set();
+
+client.on("message", message => {
+ const args = message.content.split(' ');
+  const credits = require('./creditsCode.json');
+  const path = './creditsCode.json';
+  const mention = message.mentions.users.first() || client.users.get(args[1]) || message.author;
+  const mentionn = message.mentions.users.first() || client.users.get(args[1]);
+  const author = message.author.id;
+  const balance = args[2];
+  const daily = Math.floor(Math.random() * 350) + 10;
+ 
+  if(!credits[author]) credits[author] = {credits: 50};
+  if(!credits[mention.id]) credits[mention.id] = {credits: 50};
+  fs.writeFile(path, JSON.stringify(credits, null, 5), function(err) {if(err) console.log(err)});
+ 
+ 
+  if(message.content.startsWith(prefix + "credit")) {
+  if(args[0] !== `${prefix}credit` && args[0] !== `${prefix}credits`) return;
+ 
+  if(args[2]) {
+    if(isNaN(args[2]) || args[2] < 0) return message.channel.send(`:interrobang: **| ${message.author.username}, type the credit you need to transfer! **`);
+    if(mention.bot) return message.channel.send(`**:heavy_multiplication_x:| ${message.content.split(' ')[1]} لم يتم العثور على**`);
+    if(mention.id === message.author.id) return message.channel.send('**:heavy_multiplication_x:| لا يمكنك تحويل كردت لنفسك**');
+    if(credits[author].credits < balance) return message.channel.send(`** :thinking: | ${message.author.username}, Your balance is not enough for that!**`);
+    var one = Math.floor(Math.random() * 9) + 1;
+    var two = Math.floor(Math.random() * 9) + 1;
+    var three = Math.floor(Math.random() * 9) + 1;
+    var four = Math.floor(Math.random() * 9) + 1;
+ 
+    var number = `${one}${two}${three}${four}`;
+   
+    message.channel.send(`**:heavy_dollar_sign:| \`${number}\`, أكتب الرقم للأستمرار**`).then(m => {
+      message.channel.awaitMessages(m => m.author.id === message.author.id, {max: 1, time: 10000}).then(c => {
+        if(c.first().content === number) {
+          m.delete();
+          message.channel.send(`**:moneybag: | ${message.author.username}, has transferred \`${balance}\` to ${mention}**`);
+          credits[author].credits += (-balance);
+          credits[mention.id].credits += (+balance);
+          fs.writeFile(path, JSON.stringify(credits, null, 5), function(err) {if(err) console.log(err)});
+        } else if(c.first().content !== number) {
+          m.delete();
+          message.channel.send(`** :money_with_wings: | تم الغاء الإرسال**`);
+        }
+      });
+    });
+  }
+  if(!args[2]) {
+    if(mention.bot) return message.channel.send(`:interrobang:**| ${message.author.username}, I can't find** ${message.content.split(' ')[1]}**!**`);
+    message.channel.send(`**${mention.username}, your :credit_card: balance is** \`$${credits[mention.id].credits}\`**.** `);
+  }
+ 
+  }
+        if(args[0].toLowerCase() === `${prefix}daily`) {  
+     
+if(credits[message.author.id].daily != moment().format('L')) {
+ 
+       credits[message.author.id].daily = moment().format('L');
+           
+ 
+          let ammount = (300, 500, 100, 200, 120, 150, 350, 320,220,250);
+          credits[author].credits += ammount;
+       
+       
+          message.channel.send(`**:atm: | ${message.author.username}, you received your :yen: ${ammount} daily credits!**`);
+        fs.writeFile("./creditsCode.json", JSON.stringify(credits), function(e) {
+            if (e) throw e;
+        })
+ 
+      }else{
+      message.channel.send(`:stopwatch: : **Please cool down  ${moment().endOf('day').fromNow()}**`);
+ 
+      }
+   
+        }
+         
+   
+ 
+});      
+
 
 client.login(process.env.TOKEN)

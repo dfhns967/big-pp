@@ -411,8 +411,6 @@ client.on('message', message => {
             .addField('``My Name``' , `[ ${client.user.tag} ]` , true)
             .addField('``My ID``' , `[ ${client.user.id} ]` , true)
                   .addField('``My Prefix``' , `[ ${prefix} ]` , true)
-                  .addField('``My Language``' , `[ Java Script ]` , true)
-                  .setFooter('By |' Yosif ')
     })
 }
 });

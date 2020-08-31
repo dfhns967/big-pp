@@ -943,4 +943,4 @@ if(credits[message.author.id].daily != moment().format('L')) {
 });      
 
 
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN)
